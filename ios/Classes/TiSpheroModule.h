@@ -11,20 +11,16 @@
 
 @interface TiSpheroModule : TiModule
 {
-    TiSpheroRobotProxy *robotProxy;
+    NSMutableDictionary<NSString*, TiSpheroRobotProxy*> *robotProxies;
 }
+
+- (id)connectedRobots;
 
 - (void)startDiscovery:(id)unused;
 
 - (void)stopDiscovery:(id)unused;
 
 - (void)disconnectAll:(id)unused;
-
-- (NSArray*)connectingRobots;
-
-- (NSArray*)connectedRobots;
-
-- (NSArray*)onlineRobots;
 
 - (NSNumber*)isDiscovering:(id)unused;
 

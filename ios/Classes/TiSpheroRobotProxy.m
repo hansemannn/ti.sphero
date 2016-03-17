@@ -9,6 +9,17 @@
 
 @implementation TiSpheroRobotProxy
 
+#pragma mark - Lifecycle
+
+-(id)_initWithPageContext:(id<TiEvaluator>)context andRobot:(RKConvenienceRobot*)robot
+{
+    if (self = [super _initWithPageContext:context]) {
+        [self setRobot:robot];
+    }
+    
+    return self;
+}
+
 #pragma mark - Utility macros
 
 #define VALIDATE_ROBOT \
@@ -83,6 +94,18 @@ return; \
 {
     VALIDATE_ROBOT
     return [[self robot] name];
+}
+
+- (NSString*)identifier
+{
+    VALIDATE_ROBOT
+    return [[[self robot] robot] identifier];
+}
+
+- (NSString*)serialNumber
+{
+    VALIDATE_ROBOT
+    return [[[self robot] robot] serialNumber];
 }
 
 - (NSNumber*)online

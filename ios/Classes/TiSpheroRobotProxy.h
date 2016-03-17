@@ -14,6 +14,8 @@
 
 @property(nonatomic,retain) RKConvenienceRobot *robot;
 
+-(id)_initWithPageContext:(id<TiEvaluator>)context andRobot:(RKConvenienceRobot*)robot;
+
 - (void)setLEDColor:(id)value;
 
 - (void)startDrivingWithHeadingAndVelocity:(id)args;
