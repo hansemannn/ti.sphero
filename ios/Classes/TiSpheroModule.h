@@ -6,11 +6,12 @@
  */
 
 #import "TiModule.h"
+#import "TiSpheroRobotProxy.h"
 #import <RobotKit/RobotKit.h>
 
 @interface TiSpheroModule : TiModule
 {
-    RKConvenienceRobot *robot;
+    TiSpheroRobotProxy *robotProxy;
 }
 
 - (void)startDiscovery:(id)unused;
@@ -26,12 +27,5 @@
 - (NSArray*)onlineRobots;
 
 - (NSNumber*)isDiscovering:(id)unused;
-
-- (void)setLEDColor:(id)value;
-
-- (void)startDrivingWithHeadingAndVelocity:(id)args;
-
-- (void)stopDriving:(id)unused;
-
 
 @end

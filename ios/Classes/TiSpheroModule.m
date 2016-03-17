@@ -12,12 +12,6 @@
 
 @implementation TiSpheroModule
 
-#define VALIDATE_ROBOT \
-if (![self isRobotConnected]) { \
-    NSLog(@"[ERROR] Ti.Sphero: No robot connected."); \
-    return; \
-} \
-
 #pragma mark Internal
 
 // this is generated for your module, please do not change it
@@ -81,6 +75,15 @@ if (![self isRobotConnected]) { \
 	}
 }
 
+-(TiSpheroRobotProxy*)robotProxy
+{
+    if (robotProxy == nil) {
+        robotProxy = [[TiSpheroRobotProxy alloc] _initWithPageContext:[self pageContext]];
+    }
+    
+    return robotProxy;
+}
+
 #pragma Public APIs
 
 - (void)startDiscovery:(id)unused
@@ -119,50 +122,6 @@ if (![self isRobotConnected]) { \
     return NUMBOOL([[RKRobotDiscoveryAgent sharedAgent] isDiscovering]);
 }
 
-- (void)startDrivingWithHeadingAndVelocity:(id)args
-{
-    VALIDATE_ROBOT
-    
-    id heading = [args objectAtIndex:0];
-    id velocity = [args objectAtIndex:1];
-    
-    ENSURE_TYPE(heading, NSNumber);
-    ENSURE_TYPE(velocity, NSNumber);
-    
-    [robot driveWithHeading:[TiUtils intValue:heading def:0] andVelocity:[TiUtils floatValue:velocity def:0]];
-}
-
-- (void)stopDriving:(id)unused
-{
-    VALIDATE_ROBOT
-    
-    [robot stop];
-}
-
-- (void)setLEDColor:(id)value {
-    VALIDATE_ROBOT
-    
-    TiColor *color = [TiUtils colorValue:value];
-    CGColorRef nativeColor = [[color _color] CGColor];
-    
-    if (CGColorGetNumberOfComponents(nativeColor) == 4) {
-        const CGFloat *components = CGColorGetComponents(nativeColor);
-        CGFloat red = components[0];
-        CGFloat green = components[1];
-        CGFloat blue = components[2];
-        CGFloat alpha = components[3];
-
-        [robot setLEDWithRed:red green:green blue:blue];
-    }
-}
-
-- (NSString*)robotName:(id)unused
-{
-    VALIDATE_ROBOT
-    
-    return [robot name];
-}
-
 #pragma mark Delegates
 
 - (void)handleRobotStateChangeNotification:(RKRobotChangedStateNotification*)n {
@@ -175,12 +134,11 @@ if (![self isRobotConnected]) { \
                 [convenience disconnect];
                 return;
             }
-            robot = convenience;
+            [[self robotProxy] setRobot:convenience];
             break;
         }
         case RKRobotDisconnected:
-            robot = nil;
-            [RKRobotDiscoveryAgent startDiscovery];
+            [[self robotProxy] setRobot:nil];
             break;
         default:
             break;
@@ -202,12 +160,13 @@ MAKE_SYSTEM_PROP(CONNECTION_STATUS_FAILED_CONNECT, RKRobotFailedConnect);
 
 - (void)fireConnectionEventWithType:(RKRobotChangedStateNotificationType)type
 {
-    [self fireEvent:@"connectionchange" withObject:@{@"status": NUMINT(type)}];
-}
-
-- (BOOL)isRobotConnected
-{
-    return (robot && [robot isConnected]);
+    NSMutableDictionary *event = [NSMutableDictionary dictionaryWithDictionary:@{@"status": NUMINT(type)}];
+    
+    if (type == RKRobotOnline) {
+        [event setObject:robotProxy forKey:@"robot"];
+    }
+    
+    [self fireEvent:@"connectionchange" withObject:event];
 }
 
 @end

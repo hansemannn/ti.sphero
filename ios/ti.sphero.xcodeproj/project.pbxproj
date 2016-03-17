@@ -27,6 +27,8 @@
 		24DE9E1111C5FE74003F90F6 /* TiSpheroModuleAssets.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DE9E0F11C5FE74003F90F6 /* TiSpheroModuleAssets.h */; };
 		24DE9E1211C5FE74003F90F6 /* TiSpheroModuleAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DE9E1011C5FE74003F90F6 /* TiSpheroModuleAssets.m */; };
 		3A36D1CD1C97604C00A72ACC /* RobotKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A36D1CC1C97604C00A72ACC /* RobotKit.framework */; };
+		3A9242FB1C9AC8610072AC9F /* TiSpheroRobotProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 3A9242F91C9AC8610072AC9F /* TiSpheroRobotProxy.h */; };
+		3A9242FC1C9AC8610072AC9F /* TiSpheroRobotProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9242FA1C9AC8610072AC9F /* TiSpheroRobotProxy.m */; };
 		AA747D9F0F9514B9006C5449 /* TiSphero_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* TiSphero_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -48,6 +50,8 @@
 		24DE9E0F11C5FE74003F90F6 /* TiSpheroModuleAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TiSpheroModuleAssets.h; path = Classes/TiSpheroModuleAssets.h; sourceTree = "<group>"; };
 		24DE9E1011C5FE74003F90F6 /* TiSpheroModuleAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TiSpheroModuleAssets.m; path = Classes/TiSpheroModuleAssets.m; sourceTree = "<group>"; };
 		3A36D1CC1C97604C00A72ACC /* RobotKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RobotKit.framework; path = platform/RobotKit.framework; sourceTree = "<group>"; };
+		3A9242F91C9AC8610072AC9F /* TiSpheroRobotProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TiSpheroRobotProxy.h; path = Classes/TiSpheroRobotProxy.h; sourceTree = "<group>"; };
+		3A9242FA1C9AC8610072AC9F /* TiSpheroRobotProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TiSpheroRobotProxy.m; path = Classes/TiSpheroRobotProxy.m; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* TiSphero_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiSphero_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libTiSphero.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTiSphero.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +105,8 @@
 				24DE9E1011C5FE74003F90F6 /* TiSpheroModuleAssets.m */,
 				24DD6CF71134B3F500162E58 /* TiSpheroModule.h */,
 				24DD6CF81134B3F500162E58 /* TiSpheroModule.m */,
+				3A9242F91C9AC8610072AC9F /* TiSpheroRobotProxy.h */,
+				3A9242FA1C9AC8610072AC9F /* TiSpheroRobotProxy.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -122,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA747D9F0F9514B9006C5449 /* TiSphero_Prefix.pch in Headers */,
+				3A9242FB1C9AC8610072AC9F /* TiSpheroRobotProxy.h in Headers */,
 				24DD6CF91134B3F500162E58 /* TiSpheroModule.h in Headers */,
 				24DE9E1111C5FE74003F90F6 /* TiSpheroModuleAssets.h in Headers */,
 			);
@@ -199,6 +206,7 @@
 			files = (
 				24DD6CFA1134B3F500162E58 /* TiSpheroModule.m in Sources */,
 				24DE9E1211C5FE74003F90F6 /* TiSpheroModuleAssets.m in Sources */,
+				3A9242FC1C9AC8610072AC9F /* TiSpheroRobotProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
