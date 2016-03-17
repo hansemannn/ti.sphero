@@ -71,6 +71,12 @@ return; \
     [[self robot] setZeroHeading];
 }
 
+- (void)disconnect:(id)unused
+{
+    VALIDATE_ROBOT
+    [[self robot] disconnect];
+}
+
 #pragma mark Properties
 
 - (NSString*)name
@@ -88,6 +94,12 @@ return; \
 - (NSNumber*)connected
 {
     return NUMBOOL([self isRobotConnected]);
+}
+
+- (NSNumber*)currentHeading
+{
+    VALIDATE_ROBOT
+    return NUMFLOAT([[self robot] currentHeading]);
 }
 
 #pragma mark - Utilities

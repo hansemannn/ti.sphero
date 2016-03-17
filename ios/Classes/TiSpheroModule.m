@@ -127,6 +127,7 @@
 - (void)handleRobotStateChangeNotification:(RKRobotChangedStateNotification*)n {
     switch(n.type) {
         case RKRobotConnecting:
+            NSLog(@"[DEBUG] Connecting to robot ...");
             break;
         case RKRobotOnline: {
             RKConvenienceRobot *convenience = [RKConvenienceRobot convenienceWithRobot:n.robot];
@@ -134,10 +135,16 @@
                 [convenience disconnect];
                 return;
             }
+            if ([[self robotProxy] robot] != nil) {
+                NSLog(@"[ERROR] You are already connected to a robot (%@). Call `disconnect()` and search again", [[[self robotProxy] robot] name]);
+                return;
+            }
+            NSLog(@"[DEBUG] Connected to robot (%@)", [[[self robotProxy] robot] name]);
             [[self robotProxy] setRobot:convenience];
             break;
         }
         case RKRobotDisconnected:
+            NSLog(@"[DEBUG] Disconnected from robot");
             [[self robotProxy] setRobot:nil];
             break;
         default:
