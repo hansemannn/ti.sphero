@@ -14,12 +14,20 @@
 
 @property(nonatomic,retain) RKConvenienceRobot *robot;
 
--(id)_initWithPageContext:(id<TiEvaluator>)context andRobot:(RKConvenienceRobot*)robot;
-
-- (void)setLEDColor:(id)value;
+- (id)_initWithPageContext:(id<TiEvaluator>)context andRobot:(RKConvenienceRobot*)robot;
 
 - (void)startDrivingWithHeadingAndVelocity:(id)args;
 
 - (void)stopDriving:(id)unused;
+
+- (void)setLEDColor:(id)value;
+
+- (void)setBackLEDBrightness:(id)value;
+
+- (void)resetHeading:(id)unused;
+
+- (void)disconnect:(id)unused;
+
+- (void)runMacro:(id)args;
 
 @end

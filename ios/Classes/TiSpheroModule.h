@@ -10,9 +10,6 @@
 #import <RobotKit/RobotKit.h>
 
 @interface TiSpheroModule : TiModule
-{
-    NSMutableDictionary<NSString*, TiSpheroRobotProxy*> *robotProxies;
-}
 
 - (id)connectedRobots;
 

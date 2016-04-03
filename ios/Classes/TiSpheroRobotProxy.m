@@ -88,6 +88,18 @@ return; \
     [[self robot] disconnect];
 }
 
+- (void)runMacro:(id)args
+{
+    id macro = [args objectAtIndex:0];
+    id commandId = [args objectAtIndex:1];
+    
+    ENSURE_TYPE(macro, NSString);
+    ENSURE_TYPE(commandId, NSNumber);
+        
+    [_robot macroSaveTemporary:[[[TiBlob alloc] initWithFile:[TiUtils stringValue:macro]] data]];
+    [_robot sendCommand:[RKRunMacroCommand commandWithId:[TiUtils intValue:commandId]]];
+}
+
 #pragma mark Properties
 
 - (NSString*)name

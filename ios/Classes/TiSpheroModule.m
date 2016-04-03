@@ -14,13 +14,11 @@
 
 #pragma mark Internal
 
-// this is generated for your module, please do not change it
 -(id)moduleGUID
 {
 	return @"c4830ffe-e6a9-4a7c-aa59-700b91c64088";
 }
 
-// this is generated for your module, please do not change it
 -(NSString*)moduleId
 {
 	return @"ti.sphero";
@@ -40,48 +38,9 @@
 
 -(void)dealloc
 {
-	// release any resources that have been retained by the module
-	[super dealloc];
-    RELEASE_TO_NIL(robotProxies);
-}
-
-#pragma mark Internal Memory Management
-
--(void)didReceiveMemoryWarning:(NSNotification*)notification
-{
-	// optionally release any resources that can be dynamically
-	// reloaded once memory is available - such as caches
-	[super didReceiveMemoryWarning:notification];
-}
-
-#pragma mark Listener Notifications
-
--(void)_listenerAdded:(NSString *)type count:(int)count
-{
-	if (count == 1 && [type isEqualToString:@"my_event"])
-	{
-		// the first (of potentially many) listener is being added
-		// for event named 'my_event'
-	}
-}
-
--(void)_listenerRemoved:(NSString *)type count:(int)count
-{
-	if (count == 0 && [type isEqualToString:@"my_event"])
-	{
-		// the last listener called for event named 'my_event' has
-		// been removed, we can optionally clean up any resources
-		// since no body is listening at this point for that event
-	}
-}
-
--(NSMutableDictionary<NSString*, TiSpheroRobotProxy*>*)robotProxies
-{
-    if (robotProxies == nil) {
-        robotProxies = [NSMutableDictionary dictionary];
-    }
+    [[RKRobotDiscoveryAgent sharedAgent] removeNotificationObserver:self];
     
-    return robotProxies;
+    [super dealloc];
 }
 
 #pragma Public APIs
@@ -102,11 +61,6 @@
     [[RKRobotDiscoveryAgent sharedAgent] disconnectAll];
 }
 
-- (id)connectedRobots
-{
-    return [self robotProxies];
-}
-
 - (NSNumber*)isDiscovering:(id)unused
 {
     return NUMBOOL([[RKRobotDiscoveryAgent sharedAgent] isDiscovering]);
@@ -115,34 +69,18 @@
 #pragma mark Delegates
 
 - (void)handleRobotStateChangeNotification:(RKRobotChangedStateNotification*)n {
+    NSLog(@"[INFO] Received state notification: %i", n.type);
+    
     switch(n.type) {
         case RKRobotConnecting:
-            NSLog(@"[DEBUG] Connecting to robot (@) ...", [n.robot name]);
+            NSLog(@"[INFO] Connecting to robot (%@) ...", [n.robot name]);
             break;
         case RKRobotOnline: {
-            RKConvenienceRobot *convenience = [RKConvenienceRobot convenienceWithRobot:n.robot];
-            
-            if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-                [convenience disconnect];
-                return;
-            }
-
-            NSLog(@"[DEBUG] Connected to robot (%@)", [convenience name]);
-
-            if (![[self robotProxies] valueForKey:[convenience name]]) {
-                TiSpheroRobotProxy *proxy = [[TiSpheroRobotProxy alloc] _initWithPageContext:[self pageContext] andRobot:convenience];
-                [[self robotProxies] setObject:proxy forKey:[convenience name]];
-            }
-            
+            NSLog(@"[INFO] Connected to robot (%@)", [n.robot name]);
             break;
         }
         case RKRobotDisconnected:
-            NSLog(@"[DEBUG] Disconnected from robot (@)", [n.robot name]);
-
-            if (![[self robotProxies] valueForKey:[n.robot name]]) {
-                [[self robotProxies] removeObjectForKey:[n.robot name]];
-            }
-            
+            NSLog(@"[INFO] Disconnected from robot (%@)", [n.robot name]);
             break;
         default:
             break;
@@ -164,10 +102,12 @@ MAKE_SYSTEM_PROP(CONNECTION_STATUS_FAILED_CONNECT, RKRobotFailedConnect);
 
 - (void)fireConnectionEventWithNotification:(RKRobotChangedStateNotification*)notification
 {
-    NSMutableDictionary *event = [NSMutableDictionary dictionaryWithDictionary:@{@"status": NUMINT(notification.type)}];
+    NSMutableDictionary *event = [@{@"status": NUMINT(notification.type)} mutableCopy];
     
     if (notification.type == RKRobotOnline) {
-        [event setObject:[[self robotProxies] valueForKey:[notification.robot name]] forKey:@"robot"];
+        TiSpheroRobotProxy *proxy = [[TiSpheroRobotProxy alloc] _initWithPageContext:[self pageContext]
+                                                                            andRobot:[RKConvenienceRobot convenienceWithRobot:notification.robot]];
+        [event setObject:proxy forKey:@"robot"];
     }
     
     [self fireEvent:@"connectionchange" withObject:event];
