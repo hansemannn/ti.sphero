@@ -15,4 +15,4 @@ name: ti.sphero
 moduleid: ti.sphero
 guid: c4830ffe-e6a9-4a7c-aa59-700b91c64088
 platform: iphone
-minsdk: 5.2.1.RC
+minsdk: 5.2.1
